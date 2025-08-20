@@ -3,6 +3,7 @@ const cors = require('cors');
 const { AccessToken, VideoGrant } = require('livekit-server-sdk');
 const { WebhookReceiver } = require('livekit-server-sdk');
 
+require('dotenv').config();
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cors(
   ]
 }
 ));
+
 app.get("/getToken", async (req, res) => {
   // The user's identity and the room they want to join
   const { roomName, identity } = req.query;
@@ -25,7 +27,7 @@ app.get("/getToken", async (req, res) => {
   }
 
   // Create a new AccessToken
-  const at = new AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET, {
+  const at = new AccessToken(process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET, {
     identity: identity
   });
 
@@ -45,8 +47,8 @@ app.get("/getToken", async (req, res) => {
 });
 
 const webhookReceiver = new WebhookReceiver(
-  LIVEKIT_API_KEY,
-  LIVEKIT_API_SECRET
+  process.env.LIVEKIT_API_KEY,
+  process.env.LIVEKIT_API_SECRET
 );
 
 app.post("/livekit/webhook", async (req, res) => {
