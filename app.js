@@ -69,3 +69,5 @@ const PORT = 6080;
 app.listen(PORT, () => {
   console.log(`Token server running on http://localhost:${PORT}`);
 });
+
+module.exports = app;
