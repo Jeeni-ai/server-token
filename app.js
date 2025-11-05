@@ -18,9 +18,11 @@ app.use(cors(
 }
 ));
 
+app.get("/", async (req, res) => {res.status(200).send('ok')});
+
 app.get("/getToken", async (req, res) => {
   // The user's identity and the room they want to join
-  const { roomName, identity } = req.query;
+  const { roomName, identity, user_id } = req.query;
 
   if (!roomName || !identity) {
     return res.status(400).send("Missing roomName or identity");
@@ -28,7 +30,8 @@ app.get("/getToken", async (req, res) => {
 
   // Create a new AccessToken
   const at = new AccessToken(process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET, {
-    identity: identity
+    identity: identity,
+    metadata: JSON.stringify({ user_id })
   });
 
   // Grant permissions to join a specific room
